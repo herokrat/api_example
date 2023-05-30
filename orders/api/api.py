@@ -2,6 +2,7 @@
 from datetime import datetime
 from uuid import UUID, uuid4
 from typing import Optional
+from http import HTTPStatus
 from fastapi import HTTPException
 from starlette.responses import Response
 from starlette import status

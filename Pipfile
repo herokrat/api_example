@@ -7,9 +7,11 @@ verify_ssl = true
 fastapi = "*"
 uvicorn = "*"
 pyyaml = "*"
+flake8 = "*"
 
 [requires]
 python_version = "3.10"
 
 [dev-packages]
 black = "*"
+flake8 = "*"
