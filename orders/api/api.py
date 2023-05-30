@@ -1,7 +1,7 @@
 # file: orders/api/api.py
 from datetime import datetime
 from uuid import UUID, uuid4
-
+from typing import Optional
 from fastapi import HTTPException
 from starlette.responses import Response
 from starlette import status
@@ -13,8 +13,22 @@ ORDERS = []
 
 
 @app.get("/orders", response_model=GetOrdersSchema)
-def get_orders():
-    return ORDERS
+def get_orders(cancelled: Optional[bool] = None, limit: Optional[int] = None):
+    if cancelled is None and limit is None:
+        return {"orders": ORDERS}
+
+    query_set = [order for order in ORDERS]
+
+    if cancelled is not None:
+        if cancelled:
+            query_set = [order for order in query_set if order["status"] == "cancelled"]
+        else:
+            query_set = [order for order in query_set if order["status"] != "cancelled"]
+
+    if limit is not None and len(query_set) > limit:
+        return {"orders": query_set[:limit]}
+
+    return {"orders": query_set}
 
 
 @app.post("/orders", status_code=status.HTTP_201_CREATED, response_model=GetOrderSchema)
