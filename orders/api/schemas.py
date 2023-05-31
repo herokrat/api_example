@@ -24,7 +24,7 @@ class Status(Enum):
 class OrderItemSchema(BaseModel):
     product: str
     size: Size
-    quantity: Optional[conint(ge=1, strict=True)] = 1
+    quantity: Optional[conint(strict=True, ge=1)] = 1
 
     @validator("quantity")
     def quantity_non_nullable(cls, value):
@@ -33,7 +33,7 @@ class OrderItemSchema(BaseModel):
 
 
 class CreateOrderSchema(BaseModel):
-    order: conlist(OrderItemSchema, min_items=1)
+    order: conlist[OrderItemSchema, min_items=1]
 
 
 class GetOrderSchema(CreateOrderSchema):
