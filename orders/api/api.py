@@ -17,7 +17,7 @@ from orders.api.schemas import (
     GetOrdersSchema,
 )
 
-ORDERS = []
+ORDERS: list = []
 
 
 @app.get("/orders", response_model=GetOrdersSchema)

@@ -1,10 +1,10 @@
 # file: orders/api/schemas.py
 from enum import Enum
-from typing import List, Optional
+from typing import List, Optional, Annotated
 from datetime import datetime
 from uuid import UUID
 
-from pydantic import BaseModel, conlist, conint, validator
+from pydantic import BaseModel, conlist, conint, validator, Field
 
 
 class Size(Enum):
@@ -24,7 +24,7 @@ class Status(Enum):
 class OrderItemSchema(BaseModel):
     product: str
     size: Size
-    quantity: Optional[conint(strict=True, ge=1)] = 1
+    quantity: Annotated[int, Field(ge=1)] = 1
 
     @validator("quantity")
     def quantity_non_nullable(cls, value):
@@ -33,7 +33,7 @@ class OrderItemSchema(BaseModel):
 
 
 class CreateOrderSchema(BaseModel):
-    order: conlist[OrderItemSchema, min_items=1]
+    order: Annotated[list[OrderItemSchema], Field(min_items=1)]
 
 
 class GetOrderSchema(CreateOrderSchema):
